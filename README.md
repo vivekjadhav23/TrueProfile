@@ -16,6 +16,9 @@ Ingest, normalize, deduplicate, and project multi-source candidate profiles with
 - [Tech Stack](#tech-stack)
 - [Getting Started](#getting-started)
 - [Edge Cases Handled](#edge-cases-handled)
+- [Assumptions & Descoped](#assumptions--descoped)
+- [Sample Produced JSON Output](#sample-produced-json-output)
+- [Real Produced Output (Jane Doe)](#real-produced-output-jane-doe)
 - [Demo Video](#demo-video)
 - [Contact](#contact)
 
@@ -273,6 +276,205 @@ Below is a sample projected JSON output produced by the pipeline:
   ],
   "years_experience": 0.1,
   "overall_confidence": 0.74
+}
+```
+
+---
+
+## Real Produced Output (Jane Doe)
+
+Below is the real projected and merged JSON output produced by running the pipeline on [test_candidate_recruiter.csv](file:///c:/Users/Vivek/Desktop/Candidate-Transformer/test_candidate_recruiter.csv) and [test_candidate_resume.pdf](file:///c:/Users/Vivek/Desktop/Candidate-Transformer/test_candidate_resume.pdf):
+
+```json
+{
+  "full_name": "JANE DOE",
+  "emails": [
+    "jane.doe@example.com"
+  ],
+  "phones": [
+    "+919876543210"
+  ],
+  "headline": "Software Engineer",
+  "location": {
+    "city": "Pune",
+    "region": "Maharashtra",
+    "country": "IN"
+  },
+  "links": {
+    "linkedin": "https://linkedin.com/in/janedoe",
+    "github": "https://github.com/janedoe",
+    "portfolio": null,
+    "other": []
+  },
+  "years_experience": 2.7,
+  "skills": [
+    {
+      "name": "Docker",
+      "confidence": 1.0,
+      "sources": [
+        "recruiter_csv",
+        "resume"
+      ]
+    },
+    {
+      "name": "Git",
+      "confidence": 0.9,
+      "sources": [
+        "resume"
+      ]
+    },
+    {
+      "name": "Python",
+      "confidence": 1.0,
+      "sources": [
+        "recruiter_csv",
+        "resume"
+      ]
+    },
+    {
+      "name": "REST API",
+      "confidence": 0.9,
+      "sources": [
+        "resume"
+      ]
+    },
+    {
+      "name": "React",
+      "confidence": 1.0,
+      "sources": [
+        "recruiter_csv",
+        "resume"
+      ]
+    },
+    {
+      "name": "SQL",
+      "confidence": 1.0,
+      "sources": [
+        "recruiter_csv",
+        "resume"
+      ]
+    }
+  ],
+  "experience": [
+    {
+      "company": "Google",
+      "title": "Software Engineer",
+      "start": "2024-01",
+      "end": "present",
+      "summary": "Developed REST APIs using Python and Flask, improving response latency by 20%.\nContainerized application modules using Docker for local and staging deployments."
+    },
+    {
+      "company": "Microsoft",
+      "title": "Software Engineer Intern",
+      "start": "2023-05",
+      "end": "2023-08",
+      "summary": "Developed interface elements using ReactJS, facilitating seamless navigation workflows."
+    }
+  ],
+  "education": [
+    {
+      "institution": "Savitribai Phule Pune University",
+      "degree": "B.E",
+      "field": "Computer Engineering",
+      "end_year": "2024"
+    }
+  ],
+  "provenance": [
+    {
+      "field": "full_name",
+      "source": "resume",
+      "method": "regex_fallback"
+    },
+    {
+      "field": "emails",
+      "source": "recruiter_csv",
+      "method": "csv_parsing"
+    },
+    {
+      "field": "phones",
+      "source": "recruiter_csv",
+      "method": "csv_parsing"
+    },
+    {
+      "field": "headline",
+      "source": "recruiter_csv",
+      "method": "csv_parsing"
+    },
+    {
+      "field": "location.city",
+      "source": "resume",
+      "method": "regex_fallback"
+    },
+    {
+      "field": "location.region",
+      "source": "recruiter_csv",
+      "method": "csv_parsing"
+    },
+    {
+      "field": "location.country",
+      "source": "recruiter_csv",
+      "method": "csv_parsing"
+    },
+    {
+      "field": "links.linkedin",
+      "source": "resume",
+      "method": "regex_fallback"
+    },
+    {
+      "field": "links.github",
+      "source": "resume",
+      "method": "regex_fallback"
+    },
+    {
+      "field": "years_experience",
+      "source": "resume",
+      "method": "regex_fallback"
+    },
+    {
+      "field": "skills",
+      "source": "recruiter_csv",
+      "method": "csv_parsing"
+    },
+    {
+      "field": "skills",
+      "source": "resume",
+      "method": "regex_fallback"
+    },
+    {
+      "field": "experience",
+      "source": "resume",
+      "method": "regex_fallback"
+    },
+    {
+      "field": "experience",
+      "source": "recruiter_csv",
+      "method": "csv_parsing"
+    },
+    {
+      "field": "education",
+      "source": "resume",
+      "method": "regex_fallback"
+    },
+    {
+      "field": "education",
+      "source": "recruiter_csv",
+      "method": "csv_parsing"
+    }
+  ],
+  "per_field_confidence": {
+    "full_name": 0.9,
+    "emails": 0.7,
+    "phones": 0.5,
+    "headline": 0.5,
+    "location": 0.9,
+    "links": 0.7,
+    "years_experience": 0.7,
+    "skills": 0.9,
+    "experience": 0.9,
+    "education": 0.9
+  },
+  "overall_confidence": 0.76,
+  "candidate_id": "9864426aa1f189fa"
 }
 ```
 

@@ -247,18 +247,30 @@ class ResumeSource(BaseSource):
                     return True
                 return False
 
+            edu_date_regex = r'\b((?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?|\d{1,2})\s*\d{4}|\d{4})\b\s*[\-–—]\s*\b((?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?|\d{1,2})\s*\d{4}|\d{4}|Present|Current)\b'
+
             for line in edu_lines:
                 line_str = line.strip()
                 if not line_str:
                     continue
                     
-                parts = [p.strip() for p in re.split(r'\s*(?:\||\-|\bat\b)\s*', line_str) if p.strip()]
+                # Temporarily replace date-range dashes with a token to avoid splitting on them
+                temp_line = line_str
+                date_range_match = re.search(edu_date_regex, temp_line, re.IGNORECASE)
+                if date_range_match:
+                    orig_range = date_range_match.group(0)
+                    new_range = re.sub(r'\s*[\-–—]\s*', ' __TO__ ', orig_range)
+                    temp_line = temp_line.replace(orig_range, new_range)
+                    
+                parts = [p.strip() for p in re.split(r'\s*(?:\||\-|\bat\b)\s*', temp_line) if p.strip()]
+                parts = [p.replace('__TO__', '-').strip() for p in parts]
+                
                 for part in parts:
                     year_match = re.findall(r'\b((?:19|20)\d{2})\b', part)
                     if year_match:
                         curr_edu["end_year"] = int(year_match[-1])
                         part_clean = re.sub(r'\b((?:19|20)\d{2})\b', '', part).strip()
-                        part_clean = re.sub(r'^[|,\s\-\–\—\s]+|[|,\s\-\–\—\s]+$', '', part_clean).strip()
+                        part_clean = re.sub(r'^[|,\s\-\–\—\(\)\s]+|[|,\s\-\–\—\(\)\s]+$', '', part_clean).strip()
                         if not part_clean:
                             continue
                         part = part_clean
