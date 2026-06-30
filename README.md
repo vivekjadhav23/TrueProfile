@@ -58,10 +58,88 @@ CSV/PDF Input ➔ Extract ➔ Normalize ➔ Merge ➔ Confidence ➔ Project ➔
 ```
 
 ### Architecture Diagram
-`[INSERT ARCHITECTURE DIAGRAM IMAGE HERE]`
+
+```mermaid
+graph TD
+    %% Input Sources
+    subgraph Input ["Input Sources"]
+        PDF[Resume PDF/TXT]
+        CSV[Recruiter CSV]
+        ATS[ATS JSON]
+        GH[GitHub Profile URL]
+    end
+
+    %% Pipeline Processing
+    subgraph Pipeline ["TrueProfile Core Ingestion Pipeline"]
+        DET[1. Detection Engine]
+        EXT[2. Extraction Engine]
+        NORM[3. Normalization Engine]
+        MRG[4. Fuzzy Merger]
+        CONF[5. Confidence Scorer]
+        PROJ[6. Output Projector]
+        VAL[7. Schema Validator]
+    end
+
+    %% Process flow
+    PDF --> DET
+    CSV --> DET
+    ATS --> DET
+    GH --> DET
+
+    DET --> EXT
+    EXT --> NORM
+    NORM --> MRG
+    MRG --> CONF
+    CONF --> PROJ
+    PROJ --> VAL
+
+    %% External APIs and Models
+    subgraph External ["External Services"]
+        LLM[Anthropic Claude API]
+        ST[Sentence-Transformers all-MiniLM-L6-v2]
+        GH_API[GitHub REST API]
+    end
+
+    EXT -.->|Fallback Ingestion| LLM
+    NORM -.->|Semantic Skill Alignment| ST
+    EXT -.->|Fetch Language Metadata| GH_API
+
+    %% Final Outputs
+    subgraph Output ["Target Projection"]
+        JSON[Canonical JSON Profile]
+    end
+
+    VAL --> JSON
+```
 
 ### Data Flow Diagram
-`[INSERT DATA FLOW DIAGRAM IMAGE HERE]`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Recruiter as Recruiter / System API
+    participant DET as Detection & Ingestion
+    participant EXT as Extraction Engine
+    participant NORM as Normalizer
+    participant MRG as Merger
+    participant CONF as Scorer
+    participant PROJ as Projector
+    participant VAL as Validator
+
+    Recruiter->>DET: Submit inputs (PDF/CSV/GitHub URL)
+    DET->>EXT: Standardized raw file streams
+    Note over EXT: Fallback to local regex / LLM API
+    EXT->>NORM: Raw Extracted JSON profiles
+    Note over NORM: Cosine similarity for skills<br/>E.164 phone formatting
+    NORM->>MRG: Cleaned partial profiles
+    Note over MRG: Deduplication & date overlap check
+    MRG->>CONF: Merged Profile Document
+    Note over CONF: Presence & agreement calculation
+    CONF->>PROJ: Scored Canonical Profile
+    Note over PROJ: Dot-notation schema mapping & omit policy
+    PROJ->>VAL: Projected Output JSON
+    VAL->>Recruiter: Verified Canonical JSON Output
+```
 
 ---
 
