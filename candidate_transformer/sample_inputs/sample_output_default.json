@@ -1,0 +1,31 @@
+{
+  "name": "Rahul Sharma",
+  "email": "rahul.dev@example.com",
+  "phone": "+919876543210",
+  "github_url": null,
+  "skills": ["AWS", "Docker", "Go", "Kubernetes", "Python", "SQL"],
+  "experience": [
+    {
+      "company": "Tata Consultancy Services (TCS)",
+      "title": "Senior Developer",
+      "start": "2021-01",
+      "end": "present",
+      "summary": "Leading backend development team using Python."
+    },
+    {
+      "company": "Wipro",
+      "title": "Software Engineer",
+      "start": "2018-06",
+      "end": "2020-12",
+      "summary": "Built Java REST APIs."
+    },
+    {
+      "company": "Infosys",
+      "title": "Junior Developer",
+      "start": "2016-06",
+      "end": "2018-05",
+      "summary": "Fixed bugs in web applications."
+    }
+  ],
+  "candidate_id": "19ec9913678ef6c9"
+}

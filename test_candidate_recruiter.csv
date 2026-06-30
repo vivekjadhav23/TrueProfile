@@ -1,0 +1,2 @@
+candidate_id,full_name,headline,email,phone,location,linkedin_url,github_url,years_experience,skills,experience,education
+CAND002,Jane Doe,Software Engineer,jane.doe@example.com,9876543210,Pune Maharashtra,https://linkedin.com/in/janedoe,https://github.com/janedoe,2,Python;React;Docker;SQL,Software Engineer at Google (Jan 2024 - Present),"B.E Computer Engineering, SPPU (2020-2024)"

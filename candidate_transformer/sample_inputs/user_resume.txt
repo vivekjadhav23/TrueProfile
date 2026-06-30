@@ -1,0 +1,91 @@
+JOHNATHAN DOE
+
+Software Engineer
+
+Email:
+john.doe.work@gmail.com
+
+Phone:
++91 98765 43210
+
+Location:
+Pune, Maharashtra
+
+LinkedIn:
+https://linkedin.com/in/johndoe
+
+GitHub:
+https://github.com/johndoe
+
+------------------------------------
+
+SUMMARY
+
+Software Engineer with over 2 years of experience building scalable web applications using Python, React, Node.js, Express.js and MongoDB.
+
+------------------------------------
+
+TECHNICAL SKILLS
+
+Python
+ReactJS
+NodeJS
+Express
+MongoDB
+Docker
+Git
+REST APIs
+SQL
+
+------------------------------------
+
+WORK EXPERIENCE
+
+Software Engineer
+Google
+
+January 2024 - Present
+
+• Developed REST APIs using Express.js
+• Built scalable backend services
+• Improved API performance by 30%
+
+------------------------------------
+
+EDUCATION
+
+Bachelor of Engineering
+
+Computer Engineering
+
+Savitribai Phule Pune University
+
+2023 - 2027
+
+CGPA: 9.74
+
+------------------------------------
+
+PROJECTS
+
+DevCollab
+
+Real-time collaborative code editor using React, Node.js, Socket.IO and MongoDB.
+
+Weather API Dashboard
+
+Built using React and Express.
+
+------------------------------------
+
+CERTIFICATIONS
+
+AWS Cloud Practitioner
+
+------------------------------------
+
+LANGUAGES
+
+English
+Hindi
+Marathi

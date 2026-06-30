@@ -1,0 +1,9 @@
+{
+  "applicant_name": "Rahul S.",
+  "contact_email": "rahul.sharma@example.com",
+  "contact_phone": "+91 98765 43210",
+  "employer": "TCS",
+  "role": "Senior Software Engineer",
+  "bio": "Senior developer specializing in scalable Python backend systems.",
+  "tech_stack": ["Python", "Docker", "Kubernetes"]
+}

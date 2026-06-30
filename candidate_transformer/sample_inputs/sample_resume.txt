@@ -1,0 +1,20 @@
+Rahul Sharma
+Email: rahul.dev@example.com
+Phone: +91-98765-43210
+
+Work History:
+1. Senior Developer at Tata Consultancy Services (TCS)
+   Duration: Jan 2021 to Present
+   Summary: Leading backend development team using Python.
+2. Software Engineer at Wipro
+   Duration: Jun 2018 to Dec 2020
+   Summary: Built Java REST APIs.
+3. Junior Developer at Infosys
+   Duration: Jun 2016 to May 2018
+   Summary: Fixed bugs in web applications.
+
+Education:
+- B.Tech in Computer Science, IIT Bombay, 2012-2016
+
+Skills:
+Python, Go, SQL, Docker, Kubernetes, AWS

@@ -1,0 +1,2 @@
+candidate_id,full_name,headline,email,phone,location,linkedin_url,github_url,years_experience,skills,experience,education
+CAND001,John Doe,Software Engineer,john.doe@gmail.com,9876543210,Pune Maharashtra,https://linkedin.com/in/johndoe,https://github.com/johndoe,2,"Python;React;Node.js;MongoDB","Software Engineer at Google (Jan 2024 - Present)","B.E Computer Engineering, Savitribai Phule Pune University (2023-2027)"

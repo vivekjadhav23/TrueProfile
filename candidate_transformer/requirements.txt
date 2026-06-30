@@ -1,0 +1,13 @@
+pandas
+pdfplumber
+python-docx
+phonenumbers
+sentence-transformers
+anthropic
+jsonschema
+pydantic
+click
+requests
+pytest
+flask
+reportlab

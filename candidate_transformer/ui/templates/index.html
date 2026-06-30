@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrueProfile</title>
+  <!-- Modern Outfit Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --bg-primary: #070913;
+      --bg-secondary: #0d111d;
+      --bg-card: rgba(30, 41, 59, 0.4);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --accent-color: #3b82f6;
+      --accent-hover: #2563eb;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+      --glass-bg: rgba(13, 17, 29, 0.85);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1.2rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      background: linear-gradient(135deg, #60a5fa, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      flex: 1;
+      height: calc(100vh - 72px);
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+      background-color: var(--bg-secondary);
+      border-right: 1px solid var(--border-color);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      overflow-y: auto;
+    }
+
+    .section-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .file-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .file-item:hover {
+      border-color: var(--accent-color);
+      transform: translateY(-1px);
+    }
+
+    .file-item input[type="checkbox"] {
+      cursor: pointer;
+      accent-color: var(--accent-color);
+      width: 16px;
+      height: 16px;
+    }
+
+    .file-item i {
+      color: var(--accent-color);
+    }
+
+    .file-name {
+      font-size: 0.85rem;
+      font-weight: 500;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .upload-box {
+      border: 2px dashed var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background-color: var(--bg-card);
+    }
+
+    .upload-box:hover {
+      border-color: var(--accent-color);
+      background-color: rgba(59, 130, 246, 0.05);
+    }
+
+    .upload-box i {
+      font-size: 1.5rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .upload-box p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .config-editor {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .config-textarea {
+      width: 100%;
+      height: 250px;
+      background-color: #0d1117;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: #79c0ff;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.8rem;
+      padding: 0.75rem;
+      resize: vertical;
+      outline: none;
+    }
+
+    .config-textarea:focus {
+      border-color: var(--accent-color);
+    }
+
+    .btn-run {
+      background: linear-gradient(135deg, #3b82f6, #6366f1);
+      color: #fff;
+      border: none;
+      padding: 0.9rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+    }
+
+    .btn-run:hover {
+      background: linear-gradient(135deg, #2563eb, #4f46e5);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 22px rgba(99, 102, 241, 0.45);
+    }
+
+    .btn-run:active {
+      transform: translateY(0);
+    }
+
+    /* Main Workspace */
+    .workspace {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      overflow-y: auto;
+      background-color: var(--bg-primary);
+    }
+
+    .panel {
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .panel-header {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: rgba(255, 255, 255, 0.02);
+    }
+
+    .panel-title {
+      font-size: 1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .panel-body {
+      padding: 1.5rem;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    /* JSON Display */
+    .json-wrapper {
+      background-color: #0d1117;
+      border-radius: 8px;
+      padding: 1rem;
+      overflow: auto;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.82rem;
+      line-height: 1.4;
+      color: #c9d1d9;
+      height: 100%;
+    }
+
+    /* Canonical Profile Card UI */
+    .profile-card {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .profile-header {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 1rem;
+    }
+
+    .profile-name {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
+    .profile-headline {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem;
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .meta-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+
+    .meta-value {
+      font-size: 0.9rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .meta-value i {
+      color: var(--accent-color);
+    }
+
+    .skills-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .skill-tag {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 500;
+    }
+
+    .skill-tag.high-conf {
+      border-color: var(--success);
+      color: var(--success);
+    }
+
+    .skill-tag.mid-conf {
+      border-color: var(--warning);
+      color: var(--warning);
+    }
+
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      position: relative;
+      border-left: 2px solid var(--border-color);
+      padding-left: 1rem;
+      margin-left: 0.5rem;
+    }
+
+    .timeline-item {
+      position: relative;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -1.35rem;
+      top: 0.25rem;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: var(--accent-color);
+      border: 2px solid var(--bg-secondary);
+    }
+
+    .timeline-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .timeline-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .timeline-dates {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--accent-color);
+    }
+
+    .confidence-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .confidence-badge.high {
+      background-color: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    .confidence-badge.mid {
+      background-color: rgba(245, 158, 11, 0.1);
+      color: var(--warning);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.6);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 2rem;
+      border-radius: 12px;
+      width: 450px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .modal-header {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .modal-body {
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-close {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .btn-close:hover {
+      border-color: var(--accent-color);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo" style="font-weight: 800; font-size: 1.4rem; letter-spacing: -0.025em; display: flex; align-items: center; gap: 0.6rem;">
+      <i class="fa-solid fa-circle-check" style="color: var(--accent-color); font-size: 1.5rem;"></i>
+      <span style="background: linear-gradient(135deg, #ffffff 30%, #a5f3fc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">TrueProfile</span>
+    </div>
+    <div style="display: flex; gap: 1rem; align-items: center;">
+      <span class="confidence-badge high" id="overall-badge" style="display: none;">
+        <i class="fa-solid fa-shield-halved"></i>
+        Confidence: <span id="overall-conf-text">0.00</span>
+      </span>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Sidebar Controls -->
+    <div class="sidebar">
+      <div>
+        <div class="section-title">
+          <i class="fa-solid fa-files"></i>
+          Select Input Sources
+        </div>
+        <div class="file-list" id="file-checkboxes">
+          <!-- Dynamic Files List -->
+        </div>
+      </div>
+
+      <!-- Drag and Drop Upload -->
+      <div class="upload-box" id="drop-area">
+        <input type="file" id="file-input" style="display: none;">
+        <i class="fa-solid fa-cloud-arrow-up"></i>
+        <p>Drag & Drop or Click to Upload Candidate File</p>
+      </div>
+
+      <!-- External GitHub URL (Optional) -->
+      <div style="margin-bottom: 1.5rem;">
+        <div class="section-title">
+          <i class="fa-brands fa-github"></i>
+          GitHub Profile URL (Optional)
+        </div>
+        <input type="text" id="github-url-input" placeholder="https://github.com/username" 
+               style="width: 100%; padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(30, 41, 59, 0.5); color: var(--text-color); font-size: 0.85rem; outline: none; transition: border-color 0.2s;"
+               onfocus="this.style.borderColor='var(--accent-color)'"
+               onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
+      </div>
+
+      <div class="config-editor">
+        <div class="section-title">
+          <i class="fa-solid fa-sliders"></i>
+          Projection Config (JSON)
+        </div>
+        <textarea class="config-textarea" id="config-text">{
+  "fields": [
+    { "path": "candidate_id", "type": "string" },
+    { "path": "full_name", "type": "string" },
+    { "path": "emails", "type": "array" },
+    { "path": "phones", "type": "array" },
+    { "path": "location", "type": "object" },
+    { "path": "links", "type": "object" },
+    { "path": "headline", "type": "string" },
+    { "path": "years_experience", "type": "number" },
+    { "path": "skills", "type": "array" },
+    { "path": "experience", "type": "array" },
+    { "path": "education", "type": "array" },
+    { "path": "provenance", "type": "array" }
+  ],
+  "include_confidence": true,
+  "on_missing": "null"
+}</textarea>
+      </div>
+
+      <button class="btn-run" id="btn-run">
+        <i class="fa-solid fa-play"></i>
+        Run Transformer
+      </button>
+    </div>
+
+    <!-- Main Output Workspace -->
+    <div class="workspace">
+      <!-- Canonical View -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <i class="fa-solid fa-user-tie"></i>
+            Canonical Profile Card
+          </div>
+        </div>
+        <div class="panel-body" id="canonical-card-body">
+          <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; color: var(--text-muted); gap: 1rem;">
+            <i class="fa-solid fa-inbox" style="font-size: 3rem;"></i>
+            <p>Select inputs and run the transformer to view canonical details.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Projected JSON Output -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <i class="fa-solid fa-code"></i>
+            Projected JSON Output
+          </div>
+          <button class="btn-close" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;" onclick="copyJson()">
+            <i class="fa-solid fa-copy"></i> Copy
+          </button>
+        </div>
+        <div class="panel-body" style="padding: 0;">
+          <pre class="json-wrapper"><code id="json-code">// Projected candidate JSON will render here.</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Modal -->
+  <div class="modal" id="loading-modal">
+    <div class="modal-content" style="max-width: 450px;">
+      <div class="modal-header">Processing Profiles</div>
+      <div class="modal-body" style="padding: 1.5rem 2rem; display: flex; flex-direction: column; align-items: center;">
+        <i class="fa-solid fa-gears fa-bounce" style="font-size: 2.5rem; color: var(--accent-color); margin-bottom: 1.25rem;"></i>
+        <div style="font-size: 1.1rem; font-weight: 600; color: var(--text-color); margin-bottom: 0.5rem;" id="progress-percent">0% Completed</div>
+        
+        <!-- Progress Bar Background -->
+        <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.05);">
+          <div id="progress-bar-fill" style="width: 0%; height: 100%; background: linear-gradient(90deg, var(--accent-color), #3b82f6); border-radius: 4px; transition: width 0.15s ease;"></div>
+        </div>
+        
+        <p id="progress-status" style="font-size: 0.85rem; color: var(--text-muted); margin: 0; text-align: center; width: 100%;">Initializing extraction pipeline...</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Fetch input files list on page load
+    async function loadInputs() {
+      try {
+        const res = await fetch('/api/inputs');
+        const data = await res.json();
+        const container = document.getElementById('file-checkboxes');
+        container.innerHTML = '';
+        
+        if (data.files && data.files.length > 0) {
+          data.files.forEach(file => {
+            const extIcon = file.endsWith('.csv') ? 'fa-file-csv' : 
+                            (file.endsWith('.pdf') ? 'fa-file-pdf' : 'fa-file-lines');
+            
+            const item = document.createElement('label');
+            item.className = 'file-item';
+            item.innerHTML = `
+              <input type="checkbox" value="${file}" name="input-files">
+              <i class="fa-solid ${extIcon}"></i>
+              <span class="file-name" title="${file}">${file}</span>
+            `;
+            container.appendChild(item);
+          });
+        } else {
+          container.innerHTML = '<p style="font-size:0.85rem;color:var(--text-muted)">No files available.</p>';
+        }
+      } catch (err) {
+        console.error("Error loading files list:", err);
+      }
+    }
+
+    // Run transformer
+    document.getElementById('btn-run').addEventListener('click', async () => {
+      const checkedBoxes = document.querySelectorAll('input[name="input-files"]:checked');
+      const githubUrl = document.getElementById('github-url-input').value.trim();
+
+      if (checkedBoxes.length === 0 && !githubUrl) {
+        alert("Please select at least one input file source or enter a GitHub URL.");
+        return;
+      }
+
+      const selectedFiles = Array.from(checkedBoxes).map(cb => cb.value);
+      let configObj = null;
+      try {
+        configObj = JSON.parse(document.getElementById('config-text').value);
+      } catch (e) {
+        alert("Invalid config JSON format.");
+        return;
+      }
+
+      // Reset loading progress
+      const barFill = document.getElementById('progress-bar-fill');
+      const percentText = document.getElementById('progress-percent');
+      const statusText = document.getElementById('progress-status');
+      
+      barFill.style.width = '0%';
+      percentText.textContent = '0% Completed';
+      statusText.textContent = 'Initializing extraction pipeline...';
+
+      // Show loader
+      document.getElementById('loading-modal').style.display = 'flex';
+
+      let progress = 0;
+      const statusSteps = [
+        { limit: 20, status: "Detecting input sources and reading files..." },
+        { limit: 45, status: "Normalizing contact fields, dates, and locations..." },
+        { limit: 75, status: "Aligning skills vocabulary and merging duplicate records..." },
+        { limit: 95, status: "Calculating record-level confidence and final validations..." }
+      ];
+      
+      const interval = setInterval(() => {
+        if (progress < 95) {
+          progress += Math.floor(Math.random() * 5) + 3;
+          if (progress > 95) progress = 95;
+          
+          barFill.style.width = `${progress}%`;
+          percentText.textContent = `${progress}% Completed`;
+          
+          for (let step of statusSteps) {
+            if (progress <= step.limit) {
+              statusText.textContent = step.status;
+              break;
+            }
+          }
+        }
+      }, 120);
+
+      try {
+        const res = await fetch('/api/transform', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            files: selectedFiles,
+            github_url: githubUrl,
+            config: configObj
+          })
+        });
+        const data = await res.json();
+
+        if (data.error) {
+          alert(`Error: ${data.error}`);
+        } else {
+          renderCanonicalCard(data.canonical);
+          document.getElementById('json-code').textContent = JSON.stringify(data.projected, null, 2);
+          
+          // Render overall confidence badge in header
+          const overallConf = data.canonical.overall_confidence || 0;
+          document.getElementById('overall-badge').style.display = 'inline-flex';
+          document.getElementById('overall-conf-text').textContent = overallConf.toFixed(2);
+        }
+      } catch (err) {
+        alert("Server error occurred during transformation.");
+      } finally {
+        clearInterval(interval);
+        // Animate completion and close
+        barFill.style.width = '100%';
+        percentText.textContent = '100% Completed';
+        statusText.textContent = 'Transformation complete!';
+        
+        setTimeout(() => {
+          document.getElementById('loading-modal').style.display = 'none';
+        }, 300);
+      }
+    });
+
+    // Render Canonical Card Visuals
+    function renderCanonicalCard(profile) {
+      const container = document.getElementById('canonical-card-body');
+      container.innerHTML = '';
+
+      const name = profile.full_name || 'N/A';
+      const headline = profile.headline || '';
+      
+      const emailText = (profile.emails && profile.emails.length > 0) ? profile.emails.join(', ') : 'N/A';
+      const phoneText = (profile.phones && profile.phones.length > 0) ? profile.phones.join(', ') : 'N/A';
+      
+      let locText = 'N/A';
+      if (profile.location && typeof profile.location === 'object') {
+        const parts = [];
+        if (profile.location.city) parts.push(profile.location.city);
+        if (profile.location.region) parts.push(profile.location.region);
+        if (profile.location.country) parts.push(profile.location.country);
+        if (parts.length > 0) locText = parts.join(', ');
+      }
+
+      let linksHtml = '';
+      if (profile.links && typeof profile.links === 'object') {
+        if (profile.links.linkedin) {
+          linksHtml += `<a href="${profile.links.linkedin}" target="_blank" style="color:var(--accent-color);margin-right:1rem;"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>`;
+        }
+        if (profile.links.github) {
+          linksHtml += `<a href="${profile.links.github}" target="_blank" style="color:var(--accent-color);margin-right:1rem;"><i class="fa-brands fa-github"></i> GitHub</a>`;
+        }
+      }
+      if (!linksHtml) linksHtml = 'N/A';
+
+      // Experience timeline
+      let expHtml = '';
+      if (profile.experience && profile.experience.length > 0) {
+        profile.experience.forEach(exp => {
+          expHtml += `
+            <div class="timeline-item">
+              <div class="timeline-title">${exp.title || 'Role'} at ${exp.company || 'Company'}</div>
+              <div class="timeline-subtitle">${exp.summary || ''}</div>
+              <div class="timeline-dates">${exp.start || ''} - ${exp.end || ''}</div>
+            </div>
+          `;
+        });
+      } else {
+        expHtml = '<p style="font-size:0.85rem;color:var(--text-muted)">No experience records found.</p>';
+      }
+
+      // Education timeline
+      let eduHtml = '';
+      if (profile.education && profile.education.length > 0) {
+        profile.education.forEach(edu => {
+          eduHtml += `
+            <div class="timeline-item">
+              <div class="timeline-title">${edu.degree || 'Degree'} ${edu.field ? 'in ' + edu.field : ''}</div>
+              <div class="timeline-subtitle">${edu.institution || ''}</div>
+              <div class="timeline-dates">Graduation Year: ${edu.end_year || 'N/A'}</div>
+            </div>
+          `;
+        });
+      } else {
+        eduHtml = '<p style="font-size:0.85rem;color:var(--text-muted)">No education records found.</p>';
+      }
+
+      // Skills tags
+      let skillsHtml = '';
+      if (profile.skills && profile.skills.length > 0) {
+        profile.skills.forEach(skill => {
+          const confidence = skill.confidence || 0.8;
+          const confClass = confidence >= 0.8 ? 'high-conf' : 'mid-conf';
+          skillsHtml += `
+            <div class="skill-tag ${confClass}">
+              ${skill.name} 
+              <span style="font-size:0.7rem;opacity:0.8;">(${confidence.toFixed(2)})</span>
+            </div>
+          `;
+        });
+      } else {
+        skillsHtml = '<p style="font-size:0.85rem;color:var(--text-muted)">No skills found.</p>';
+      }
+
+      container.innerHTML = `
+        <div class="profile-card">
+          <div class="profile-header">
+            <div class="profile-name">${name}</div>
+            <div class="profile-headline">${headline}</div>
+          </div>
+          
+          <div class="meta-grid">
+            <div class="meta-item">
+              <span class="meta-label">Email</span>
+              <span class="meta-value"><i class="fa-solid fa-envelope"></i> ${emailText}</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Phone</span>
+              <span class="meta-value"><i class="fa-solid fa-phone"></i> ${phoneText}</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Location</span>
+              <span class="meta-value"><i class="fa-solid fa-location-dot"></i> ${locText}</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Links</span>
+              <span class="meta-value">${linksHtml}</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Years of Experience</span>
+              <span class="meta-value"><i class="fa-solid fa-briefcase"></i> ${profile.years_experience || '0'} Years</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Hashed ID</span>
+              <span class="meta-value" style="font-family:monospace;font-size:0.75rem;"><i class="fa-solid fa-key"></i> ${profile.candidate_id || 'N/A'}</span>
+            </div>
+          </div>
+
+          <div>
+            <div class="section-title"><i class="fa-solid fa-brain"></i> Skills & Expertise</div>
+            <div class="skills-container">${skillsHtml}</div>
+          </div>
+
+          <div>
+            <div class="section-title"><i class="fa-solid fa-history"></i> Work Experience</div>
+            <div class="timeline">${expHtml}</div>
+          </div>
+
+          <div>
+            <div class="section-title"><i class="fa-solid fa-graduation-cap"></i> Education</div>
+            <div class="timeline">${eduHtml}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Drag and Drop files upload
+    const dropArea = document.getElementById('drop-area');
+    const fileInput = document.getElementById('file-input');
+
+    dropArea.addEventListener('click', () => fileInput.click());
+    
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length > 0) {
+        uploadFile(fileInput.files[0]);
+      }
+    });
+
+    dropArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropArea.style.borderColor = 'var(--accent-color)';
+    });
+
+    dropArea.addEventListener('dragleave', () => {
+      dropArea.style.borderColor = 'var(--border-color)';
+    });
+
+    dropArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropArea.style.borderColor = 'var(--border-color)';
+      if (e.dataTransfer.files.length > 0) {
+        uploadFile(e.dataTransfer.files[0]);
+      }
+    });
+
+    async function uploadFile(file) {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const res = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert(`File "${data.filename}" uploaded successfully!`);
+          loadInputs(); // Refresh files list
+        } else {
+          alert(`Upload failed: ${data.error}`);
+        }
+      } catch (err) {
+        alert("Server error uploading file.");
+      }
+    }
+
+    // Copy JSON to clipboard
+    function copyJson() {
+      const code = document.getElementById('json-code').textContent;
+      navigator.clipboard.writeText(code).then(() => {
+        alert("Projected JSON copied to clipboard!");
+      });
+    }
+
+    // Initial Load
+    loadInputs();
+  </script>
+</body>
+</html>

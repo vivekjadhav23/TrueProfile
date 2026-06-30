@@ -1,0 +1,106 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CanonicalCandidate",
+  "type": "object",
+  "properties": {
+    "candidate_id": {
+      "type": ["string", "null"]
+    },
+    "full_name": {
+      "type": ["string", "null"]
+    },
+    "emails": {
+      "type": ["array", "null"],
+      "items": {
+        "type": "string"
+      }
+    },
+    "phones": {
+      "type": ["array", "null"],
+      "items": {
+        "type": "string"
+      }
+    },
+    "location": {
+      "type": ["object", "null"],
+      "properties": {
+        "city": { "type": ["string", "null"] },
+        "region": { "type": ["string", "null"] },
+        "country": { "type": ["string", "null"] }
+      }
+    },
+    "links": {
+      "type": ["object", "null"],
+      "properties": {
+        "linkedin": { "type": ["string", "null"] },
+        "github": { "type": ["string", "null"] },
+        "portfolio": { "type": ["string", "null"] },
+        "other": {
+          "type": ["array", "null"],
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "headline": {
+      "type": ["string", "null"]
+    },
+    "years_experience": {
+      "type": ["number", "null"]
+    },
+    "skills": {
+      "type": ["array", "null"],
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "confidence": { "type": "number" },
+          "sources": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "required": ["name"]
+      }
+    },
+    "experience": {
+      "type": ["array", "null"],
+      "items": {
+        "type": "object",
+        "properties": {
+          "company": { "type": ["string", "null"] },
+          "title": { "type": ["string", "null"] },
+          "start": { "type": ["string", "null"] },
+          "end": { "type": ["string", "null"] },
+          "summary": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "education": {
+      "type": ["array", "null"],
+      "items": {
+        "type": "object",
+        "properties": {
+          "institution": { "type": ["string", "null"] },
+          "degree": { "type": ["string", "null"] },
+          "field": { "type": ["string", "null"] },
+          "end_year": { "type": ["string", "number", "null"] }
+        }
+      }
+    },
+    "provenance": {
+      "type": ["array", "null"],
+      "items": {
+        "type": "object",
+        "properties": {
+          "field": { "type": "string" },
+          "source": { "type": "string" },
+          "method": { "type": "string" }
+        }
+      }
+    },
+    "overall_confidence": {
+      "type": ["number", "null"]
+    }
+  },
+  "required": ["full_name"]
+}

@@ -1,0 +1,17 @@
+{
+  "pipeline": {
+    "confidence_threshold": 0.7,
+    "enable_llm_extraction": false
+  },
+  "sources": {
+    "csv": {
+      "mapping": {
+        "full_name": "name",
+        "email_address": "email"
+      }
+    },
+    "github": {
+      "token": "YOUR_GITHUB_TOKEN_HERE"
+    }
+  }
+}

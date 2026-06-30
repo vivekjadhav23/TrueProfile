@@ -1,0 +1,16 @@
+{
+  "full_name": "Rahul Sharma",
+  "primary_email": "rahul.dev@example.com",
+  "phone": "+919876543210",
+  "skills": ["AWS", "Docker", "Go", "Kubernetes", "Python", "SQL"],
+  "years_experience": null,
+  "overall_confidence": 0.58,
+  "per_field_confidence": {
+    "full_name": 1.0,
+    "primary_email": 0.7,
+    "phone": 0.8,
+    "skills": 0.4,
+    "years_experience": 0.0
+  },
+  "candidate_id": "19ec9913678ef6c9"
+}
