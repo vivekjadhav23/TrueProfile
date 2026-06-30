@@ -158,6 +158,24 @@ class Normalizer:
         if not canonical_list:
             return skills
 
+        # Optimization: Render Free Tier (512MB RAM) crashes with PyTorch SentenceTransformer OOM.
+        # Fall back to zero-memory, fast substring/string matching.
+        import os
+        if os.environ.get("RENDER") == "true" or os.environ.get("DISABLE_TRANSFORMER") == "true":
+            logger.info("Render environment detected. Using fast offline string matching for skill canonicalization.")
+            normalized = []
+            for skill in skills:
+                matched = False
+                skill_lower = skill.lower()
+                for c_skill in canonical_list:
+                    if skill_lower == c_skill.lower() or skill_lower in c_skill.lower() or c_skill.lower() in skill_lower:
+                        normalized.append(c_skill)
+                        matched = True
+                        break
+                if not matched:
+                    normalized.append(skill)
+            return normalized
+
         try:
             from sentence_transformers import util
             model = self.model

@@ -4,7 +4,10 @@ Ingest, normalize, deduplicate, and project multi-source candidate profiles with
 
 ![TrueProfile Dashboard](assets/dashboard.png)
 
+**Live Demo:** [https://trueprofile.onrender.com](https://trueprofile.onrender.com)
+
 ## Table of Contents
+- [Live Demo](#live-demo)
 - [Features](#features)
   - [Multi-Source Ingestion](#multi-source-ingestion)
   - [Normalization Engine](#normalization-engine)
