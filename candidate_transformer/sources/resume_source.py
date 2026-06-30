@@ -158,17 +158,19 @@ class ResumeSource(BaseSource):
             for i, line in enumerate(lines):
                 line_upper = line.upper().strip()
                 line_upper = re.sub(r'[*_#\-–—\s]+', ' ', line_upper).strip()
-                if "SKILLS" in line_upper:
+                if len(line_upper) > 25:
+                    continue
+                if "SKILLS" in line_upper and "SKILLS" not in sections:
                     sections["SKILLS"] = i
-                elif "EXPERIENCE" in line_upper:
+                elif "EXPERIENCE" in line_upper and "EXPERIENCE" not in sections:
                     sections["EXPERIENCE"] = i
-                elif "EDUCATION" in line_upper:
+                elif "EDUCATION" in line_upper and "EDUCATION" not in sections:
                     sections["EDUCATION"] = i
-                elif "SUMMARY" in line_upper:
+                elif "SUMMARY" in line_upper and "SUMMARY" not in sections:
                     sections["SUMMARY"] = i
-                elif "PROJECTS" in line_upper:
+                elif "PROJECTS" in line_upper and "PROJECTS" not in sections:
                     sections["PROJECTS"] = i
-                elif "ACHIEVEMENTS" in line_upper:
+                elif "ACHIEVEMENTS" in line_upper and "ACHIEVEMENTS" not in sections:
                     sections["ACHIEVEMENTS"] = i
 
             sorted_sections = sorted(sections.items(), key=lambda x: x[1])
@@ -275,7 +277,13 @@ class ResumeSource(BaseSource):
                             continue
                         part = part_clean
                         
-                    if is_grade_value(part):
+                    # Strip any grade info (CGPA, GPA, percent, etc.) from the part
+                    grade_match = re.search(r'\b(?:cgpa|gpa|percent|pointer|marks|grade)\s*:?\s*\d+(?:\.\d+)?(?:\s*/\s*\d+)?\b|\b\d+(?:\.\d+)?\s*%\b', part, re.IGNORECASE)
+                    if grade_match:
+                        part = part.replace(grade_match.group(0), "").strip()
+                        part = re.sub(r'^[|,\s\-\–\—\(\)\s]+|[|,\s\-\–\—\(\)\s]+$', '', part).strip()
+                        
+                    if not part:
                         continue
                         
                     if any(k in part.lower() for k in inst_keywords):
@@ -397,6 +405,13 @@ class ResumeSource(BaseSource):
                     elif date_match and curr_job:
                         curr_job["start"] = date_match.group(1).strip()
                         curr_job["end"] = date_match.group(2).strip()
+                        if not curr_job.get("company"):
+                            cleaned_line = line.replace(date_match.group(0), "").strip()
+                            cleaned_line = re.sub(r'^[|,\s\-\–\—\s]+|[|,\s\-\–\—\s]+$', '', cleaned_line).strip()
+                            cleaned_line = re.sub(r'\b(remote|onsite|hybrid)\b', '', cleaned_line, flags=re.IGNORECASE).strip()
+                            cleaned_line = re.sub(r'^[|,\s\-\–\—\s]+|[|,\s\-\–\—\s]+$', '', cleaned_line).strip()
+                            if cleaned_line:
+                                curr_job["company"] = cleaned_line
                     i += 1
             if curr_job:
                 experience_list.append(curr_job)
