@@ -11,3 +11,4 @@ requests
 pytest
 flask
 reportlab
+gunicorn
