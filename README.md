@@ -205,6 +205,79 @@ Open **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)** in your browser to acc
 
 ---
 
+## Assumptions & Descoped
+
+### Assumptions
+* **India-First Ingestion**: The E.164 phone standardizer defaults to the `"IN"` (India) region code.
+* **Active Duration Anchors**: Career durations terminating in `"Present"` or `"Current"` assume a reference anchor date of June 2026.
+* **Semantic Vector Vocabulary**: Semantic skill classification assumes tech-stack vocabularies matching the local `all-MiniLM-L6-v2` encoder map.
+
+### Descoped
+* **Dynamic Output Schemas**: Projection formats support JSON mapping rules but require validation against standard JSON Draft-07 structures. Runtime custom formats outside standard Draft-07 constraints are descoped.
+* **Scanned PDF Ingestion**: Document extraction reads standard text layer PDFs. OCR for scanned image-only files is descoped.
+
+---
+
+## Sample Produced JSON Output
+
+Below is a sample projected JSON output produced by the pipeline:
+```json
+{
+  "candidate_id": "b891e32246506c51",
+  "full_name": "Vivek Dhananjay Jadhav",
+  "primary_email": "vivekdjadhav2004@gmail.com",
+  "phone": "+918766069885",
+  "location": {
+    "city": "Pune",
+    "region": "Maharashtra",
+    "country": "IN"
+  },
+  "skills": [
+    "C++",
+    "DBMS",
+    "Express.js",
+    "Git",
+    "HTML",
+    "Java",
+    "JavaScript",
+    "MongoDB",
+    "MySQL",
+    "Node.js",
+    "Python",
+    "React",
+    "Redis",
+    "SQL"
+  ],
+  "education": [
+    {
+      "institution": "Dr. D. Y. Patil Institute of Technology Pune, Maharashtra",
+      "degree": "B.E.",
+      "field": "Computer Engineering",
+      "end_year": 2027
+    },
+    {
+      "institution": "Saraswati Vidyamandir College of Science Shahada, Maharashtra",
+      "degree": "Higher Secondary (Class XII)",
+      "field": null,
+      "end_year": 2023
+    }
+  ],
+  "experience": [
+    {
+      "company": "CodeAlpha",
+      "title": "Full Stack Developer Intern",
+      "start": "2026-01",
+      "end": "2026-02",
+      "summary": "Built 2 production-ready full-stack applications using the MERN stack with secure coding practices, modular architecture, and end-to-end feature ownership from design to deployment."
+    }
+  ],
+  "years_experience": 0.1,
+  "overall_confidence": 0.74
+}
+```
+
+---
+
 ## Demo Video
 `[INSERT DEMO VIDEO LINK/EMBED HERE]`
 
