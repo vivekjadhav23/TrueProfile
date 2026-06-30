@@ -484,7 +484,7 @@ Below is the real projected and merged JSON output produced by running the pipel
 ---
 
 ## Demo Video
-`[INSERT DEMO VIDEO LINK/EMBED HERE]`
+👉 **[Watch the TrueProfile Project Walkthrough Video](https://drive.google.com/file/d/1J90ilc3zMelEvFvg1voteEJLxp1NK_Yv/view?usp=sharing)**
 
 ---
 
