@@ -2,6 +2,8 @@
 
 Ingest, normalize, deduplicate, and project multi-source candidate profiles with semantic skill mapping and trust-weighted confidence scoring.
 
+![TrueProfile Dashboard](assets/dashboard.png)
+
 ## Table of Contents
 - [Features](#features)
   - [Multi-Source Ingestion](#multi-source-ingestion)
