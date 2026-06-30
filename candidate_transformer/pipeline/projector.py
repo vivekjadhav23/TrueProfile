@@ -153,7 +153,19 @@ class Projector:
         required_fields = []
         for field in fields_conf:
             target_path = field.get("path")
-            f_type = field.get("type", "string")
+            from_path = field.get("from") or target_path
+            f_type = field.get("type")
+            
+            if not f_type:
+                root_key = from_path.split("[")[0].split(".")[0]
+                if root_key in ["skills", "experience", "education", "provenance", "emails", "phones"]:
+                    f_type = "array"
+                elif root_key in ["location", "links"]:
+                    f_type = "object"
+                elif root_key in ["years_experience", "overall_confidence"]:
+                    f_type = "number"
+                else:
+                    f_type = "string"
             
             # Map JS types from config to JSON schema keywords, allowing null/string (for errors) values
             if f_type == "array" or "[]" in f_type:
